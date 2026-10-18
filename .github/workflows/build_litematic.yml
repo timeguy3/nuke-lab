@@ -1,0 +1,30 @@
+name: Build OSC Nuke Carpet Master Lab
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-schematic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install litemapy
+        run: pip install litemapy
+
+      - name: Generate Master Carpet Litematic
+        run: python generate_nuke_builder.py
+
+      - name: Upload Litematic Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: osc-nuke-carpet-master-lab
+          path: osc_nuke_carpet_master_lab.litematic
